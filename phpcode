@@ -1,0 +1,55 @@
+<?php
+// Include Google Client Library
+require_once 'path/to/google-api-php-client/vendor/autoload.php';
+
+// Initialize Google Client
+$client = new Google_Client();
+$client->setClientId('YOUR_CLIENT_ID');
+$client->setClientSecret('YOUR_CLIENT_SECRET');
+$client->setRedirectUri('YOUR_REDIRECT_URI');
+$client->addScope('email');
+
+// Initialize WordPress REST API endpoint
+$wp_endpoint = 'https://your-wordpress-site.com/wp-json/custom-plugin/google-signin';
+
+// Handle Google Sign-In
+if (isset($_GET['code'])) {
+    $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
+    $client->setAccessToken($token['access_token']);
+
+    // Fetch user data from Google
+    $google_user = $client->verifyIdToken();
+
+    // Send user data to WordPress
+    $data = array(
+        'email' => $google_user['email'],
+        'name' => $google_user['name'],
+        // Add any additional user data you want to send
+    );
+
+    // Remote call to WordPress API endpoint
+    $response = wp_remote_post($wp_endpoint, array(
+        'method' => 'POST',
+        'body' => $data,
+    ));
+
+    // Handle WordPress response
+    if (is_wp_error($response)) {
+        // Handle error
+        echo "Error: " . $response->get_error_message();
+    } else {
+        // Handle success
+        echo "User data stored successfully in WordPress.";
+    }
+} else {
+    // Check if user is logged in
+    if (is_user_logged_in()) {
+        // User is already logged in, do something
+        echo "User is already logged in.";
+    } else {
+        // User is not logged in, display Google Sign-In button
+        $auth_url = $client->createAuthUrl();
+        echo "<a href='$auth_url'>Sign in with Google</a>";
+    }
+}
+?>
