@@ -1,0 +1,17 @@
+Path to Google API Client Library:
+Download the Google API Client Library for PHP from the official GitHub repository: Google APIs Client Library for PHP.
+Once downloaded, extract the contents and find the autoload.php file. The path to this file will depend on where you've placed the library within your project structure. Update 'path/to/google-api-php-client/vendor/autoload.php' with the actual path to this file.
+Google OAuth 2.0 Credentials:
+Go to the Google API Console.
+Create a new project or select an existing project.
+Navigate to the "Credentials" tab.
+Create OAuth 2.0 credentials by clicking on "Create credentials" and selecting "OAuth client ID".
+Choose "Web application" as the application type.
+Add the appropriate Authorized Redirect URI. This should be the URL of the PHP script where Google will redirect after authentication.
+Once created, you'll get a Client ID and Client Secret. Update 'YOUR_CLIENT_ID' and 'YOUR_CLIENT_SECRET' with these values.
+Redirect URI:
+The Redirect URI should point to the PHP script where Google will redirect after authentication. It should be in the format https://your-domain.com/path/to/your-script.php. Update 'YOUR_REDIRECT_URI' with this value.
+WordPress REST API Endpoint:
+Create a custom REST API endpoint in your WordPress site to receive data from the PHP script.
+Replace 'https://your-wordpress-site.com/wp-json/custom-plugin/google-signin' with the actual URL of your custom endpoint.
+Make sure to follow security best practices when handling sensitive data and communicating between your PHP script and WordPress site. Once you've updated all the appropriate values, you can deploy the script and test the Google Sign-In integration with your WordPress site.
